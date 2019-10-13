@@ -22,9 +22,9 @@ namespace MinesweeperNetCore
         {
             gameBoard = new Board(gameBoardSize);
             gameBoard.FillBoard();
-            Console.Clear();
             while (!hasGameEnded)
             {
+                Console.Clear();
                 gameBoard.DisplayBoard();
                 RequestUserInput();
             }

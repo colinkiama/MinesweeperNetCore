@@ -340,8 +340,9 @@ namespace MinesweeperNetCore.Model
 
         private int GenerateMineTileValue()
         {
-
-            return rnd.Next(-1, 1);
+            
+           // 10%-20% chance of tile being a mine
+            return rnd.Next(-1, rnd.Next(4, 9));
         }
     }
 }
