@@ -32,28 +32,42 @@ namespace MinesweeperNetCore
 
         private void RequestUserInput()
         {
-            bool wasCorrectInput = false;
-            while (!wasCorrectInput)
-            {
-                Console.WriteLine("Enter row number (Vertical): ");
-                Console.Write("Enter Column Number (Horizontal: ");
-                string input = Console.ReadLine();
-                var parseResult = CoordinateInputHelper.ParseInput(input);
-                if (parseResult.ErrorResult == Enums.InputParseError.None)
-                {
-                    wasCorrectInput = HandleParseResult(parseResult);
-                }
-                else
-                {
-                    DisplayErrorMessage(parseResult.ErrorResult, input);
-                }
-            }
+            int rowNumber = InputLoop("Enter row number (Vertical):");
+            int columnNumber = InputLoop("Enter Column Number (Horizontal: ");
+            HandlePositionInput(rowNumber, columnNumber);
+
         }
 
-        private bool HandleParseResult(InputParseResult parseResult)
+        private void HandlePositionInput(int rowNumber, int columnNumber)
         {
             throw new NotImplementedException();
         }
+
+        private int InputLoop(string inputMessage)
+        {
+            int validInput = int.MaxValue;
+            bool wasCorrectInput = false;
+
+            while (!wasCorrectInput)
+            {
+                string input = Console.ReadLine();
+                var parseResult = CoordinateInputHelper.ParseInput(input);
+                if (parseResult.ErrorResult != Enums.InputParseError.None)
+                {
+                    DisplayErrorMessage(parseResult.ErrorResult, input);
+
+                }
+                else
+                {
+                    validInput = parseResult.ParsedInput;
+                    wasCorrectInput = true;
+                }
+            }
+
+            return validInput;
+        }
+
+       
 
         private void DisplayErrorMessage(InputParseError errorResult, string input)
         {
@@ -71,6 +85,6 @@ namespace MinesweeperNetCore
             }
         }
 
-       
+
     }
 }
