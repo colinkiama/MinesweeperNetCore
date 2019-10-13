@@ -114,18 +114,18 @@ namespace MinesweeperNetCore
             BoardOption boardOption = BoardOption.Flag;
             while (!isValidOption)
             {
-                OptionHelper.PrintOption('R', "Reveal Tile");
-                OptionHelper.PrintOption('F', "Flag Tile");
+                OptionHelper.PrintOption('r', "Reveal Tile");
+                OptionHelper.PrintOption('f', "Flag Tile");
                 string input = Console.ReadLine();
                 bool isChar = char.TryParse(input.Trim(), out char inputChar);
                 if (isChar)
                 {
-                    if (inputChar == 'R')
+                    if (char.ToUpper(inputChar) == 'R')
                     {
                         isValidOption = true;
                         boardOption = BoardOption.Reveal;
                     }
-                    else if (inputChar == 'F')
+                    else if (char.ToUpper(inputChar) == 'F')
                     {
                         isValidOption = true;
                         boardOption = BoardOption.Flag;

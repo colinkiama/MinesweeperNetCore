@@ -45,7 +45,7 @@ namespace MinesweeperNetCore
             }
             else
             {
-                HandleOption(parsedOption);
+                HandleOption(char.ToUpper(parsedOption));
             }
         }
 
@@ -56,7 +56,7 @@ namespace MinesweeperNetCore
                 case '1':
                     StartGame();
                     break;
-                case 'q':
+                case 'Q':
                     hasUserQuitProgram = true;
                     break;
             }
