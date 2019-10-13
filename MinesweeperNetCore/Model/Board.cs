@@ -1,4 +1,5 @@
-﻿using MinesweeperNetCore.Structs;
+﻿using MinesweeperNetCore.Enums;
+using MinesweeperNetCore.Structs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,6 +56,11 @@ namespace MinesweeperNetCore.Model
             }
             Console.WriteLine();
 
+        }
+
+        internal TileRevealResult RevealTile(int rowNumber, int columnNumber)
+        {
+            throw new NotImplementedException();
         }
 
         internal void FillBoard()

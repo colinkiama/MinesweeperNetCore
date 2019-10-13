@@ -40,7 +40,7 @@ namespace MinesweeperNetCore
 
         private void HandlePositionInput(int rowNumber, int columnNumber)
         {
-            throw new NotImplementedException();
+            TileRevealResult result = gameBoard.RevealTile(rowNumber, columnNumber);
         }
 
         private int InputLoop(string inputMessage)
@@ -51,7 +51,7 @@ namespace MinesweeperNetCore
             while (!wasCorrectInput)
             {
                 string input = Console.ReadLine();
-                var parseResult = CoordinateInputHelper.ParseInput(input);
+                InputParseResult parseResult = CoordinateInputHelper.ParseInput(input);
                 if (parseResult.ErrorResult != Enums.InputParseError.None)
                 {
                     DisplayErrorMessage(parseResult.ErrorResult, input);
