@@ -95,14 +95,17 @@ namespace MinesweeperNetCore.Model
         private void AttemptToRevealSurroundingTile(int row, int column)
         {
             var currentTile = this[row, column];
-            if (currentTile.Value != Game.MineValue)
+            if (!currentTile.IsVisible)
             {
-                currentTile.IsVisible = true;
-                this[row, column] = currentTile;
-                if (currentTile.Value == Game.BlankTileValue)
+                if (currentTile.Value != Game.MineValue)
                 {
-                    RevealSurroundingTiles(row, column);
-                }
+                    currentTile.IsVisible = true;
+                    this[row, column] = currentTile;
+                    if (currentTile.Value == Game.BlankTileValue)
+                    {
+                        RevealSurroundingTiles(row, column);
+                    }
+                } 
             }
             
             // You don't reveal the mine
