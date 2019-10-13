@@ -5,6 +5,7 @@ using MinesweeperNetCore.Structs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace MinesweeperNetCore
 {
@@ -16,6 +17,11 @@ namespace MinesweeperNetCore
 
         bool hasGameEnded = false;
         Board gameBoard;
+        
+        TileRevealResult lastRevealResult = TileRevealResult.Revealed;
+        int lastRow = 0;
+        int lastColumn = 0;
+        
         // Program will create this object then start a game with it. When game ends, object is destroyed 
         // => Context returns to program, which will switch the state back to none 
         internal void Start()
@@ -26,14 +32,40 @@ namespace MinesweeperNetCore
             {
                 Console.Clear();
                 gameBoard.DisplayBoard();
+                if (lastRevealResult == TileRevealResult.AlreadyRevealed)
+                {
+                    DisplayAlreadyRevealedTileMessage(lastRow, lastColumn);
+                }
+                else if (lastRevealResult == TileRevealResult.Mine)
+                {
+                    hasGameEnded = true;
+                    DisplayGameOverMessage();
+                    continue;
+                }
                 RequestUserInput();
             }
+
+            Console.Clear();
+        }
+
+        private void DisplayGameOverMessage()
+        {
+            Console.WriteLine("BOOOOOOOOM!");
+            Console.WriteLine($"You triggered a mine at row {lastRow}, column {lastColumn}. Game Over!");
+            Thread.Sleep(3000);
+        }
+
+        private void DisplayAlreadyRevealedTileMessage(int lastRow, int lastColumn)
+        {
+            Console.WriteLine($"You have already revealed the tile on row {lastRow}, column {lastColumn}.");
         }
 
         private void RequestUserInput()
         {
             int inputRow = InputLoop("Enter row number (Vertical):");
-            int inputColumn = InputLoop("Enter Column Number (Horizontal: ");
+            int inputColumn = InputLoop("Enter Column Number (Horizontal): ");
+            lastRow = inputRow;
+            lastColumn = inputColumn;
             // Takeaway 1 from inputs because the board array is zero-indexed
             HandlePositionInput(inputRow - 1, inputColumn - 1);
 
@@ -41,7 +73,8 @@ namespace MinesweeperNetCore
 
         private void HandlePositionInput(int rowNumber, int columnNumber)
         {
-            TileRevealResult result = gameBoard.RevealTile(rowNumber, columnNumber);
+
+            lastRevealResult = gameBoard.RevealTile(rowNumber, columnNumber);
         }
 
         private int InputLoop(string inputMessage)
@@ -57,7 +90,6 @@ namespace MinesweeperNetCore
                 if (parseResult.ErrorResult != Enums.InputParseError.None)
                 {
                     DisplayErrorMessage(parseResult.ErrorResult, input);
-
                 }
                 else
                 {
@@ -76,7 +108,7 @@ namespace MinesweeperNetCore
             switch (errorResult)
             {
                 case InputParseError.NumberOutOfRange:
-                    Console.WriteLine($"The value you entered: \"{input}\" is outside of the range between" +
+                    Console.WriteLine($"The value you entered: \"{input}\" is outside of the range between " +
                         $"1 and {gameBoardSize}");
                     break;
                 case InputParseError.NotANumber:

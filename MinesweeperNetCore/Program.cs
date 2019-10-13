@@ -54,7 +54,6 @@ namespace MinesweeperNetCore
             {
                 case '1':
                     StartGame();
-                    CurrentState = GameState.InGame;
                     break;
                 case 'q':
                     hasUserQuitProgram = true;
