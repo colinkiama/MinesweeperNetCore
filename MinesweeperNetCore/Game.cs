@@ -18,7 +18,7 @@ namespace MinesweeperNetCore
         bool hasGameEnded = false;
         Board gameBoard;
 
-        TileRevealResult lastRevealResult = TileRevealResult.Revealed;
+        TileChangeResult lastTileChange = TileChangeResult.Revealed;
         int lastRow = 0;
         int lastColumn = 0;
 
@@ -32,14 +32,23 @@ namespace MinesweeperNetCore
             {
                 Console.Clear();
                 gameBoard.DisplayBoard();
-                if (lastRevealResult == TileRevealResult.AlreadyRevealed)
+                if (lastTileChange == TileChangeResult.AlreadyRevealed)
                 {
                     DisplayAlreadyRevealedTileMessage(lastRow, lastColumn);
+                    SetDefaultLastRevealResult();
+                    
                 }
-                else if (lastRevealResult == TileRevealResult.Mine)
+                else if (lastTileChange == TileChangeResult.FlagUnavailable)
                 {
+                    DisplayCannotFlagRevealedTileMessage();
+                    SetDefaultLastRevealResult();
+                }
+                else if (lastTileChange == TileChangeResult.Mine)
+                {
+                    
                     hasGameEnded = true;
                     DisplayGameOverMessage();
+                    SetDefaultLastRevealResult();
                     continue;
                 }
                 else
@@ -57,6 +66,17 @@ namespace MinesweeperNetCore
             }
 
             Console.Clear();
+        }
+
+        private void DisplayCannotFlagRevealedTileMessage()
+        {
+            Console.WriteLine($"Tile on row {lastRow}, column {lastColumn} has already been revealed.");
+            Console.WriteLine("You can't flag a tile that has already been revealed");
+        }
+
+        private void SetDefaultLastRevealResult()
+        {
+            lastTileChange = TileChangeResult.Revealed;
         }
 
         private void DisplayGameWinMessage()
@@ -85,7 +105,7 @@ namespace MinesweeperNetCore
             lastRow = inputRow;
             lastColumn = inputColumn;
             // Takeaway 1 from inputs because the board array is zero-indexed
-            HandlePositionInput(inputRow - 1, inputColumn - 1);
+            HandlePositionInput(inputRow - 1, inputColumn - 1, boardOption);
         }
 
         private BoardOption PickBoardOption()
@@ -121,9 +141,18 @@ namespace MinesweeperNetCore
 
         }
 
-        private void HandlePositionInput(int rowNumber, int columnNumber)
+        private void HandlePositionInput(int rowNumber, int columnNumber, BoardOption boardOption)
         {
-            lastRevealResult = gameBoard.RevealTile(rowNumber, columnNumber);
+            switch (boardOption)
+            {
+                case BoardOption.Flag:
+                    lastTileChange = gameBoard.FlagTile(rowNumber, columnNumber);
+                    break;
+                case BoardOption.Reveal:
+                    lastTileChange = gameBoard.RevealTile(rowNumber, columnNumber);
+                    break;
+            }
+
         }
 
         private int InputLoop(string inputMessage)

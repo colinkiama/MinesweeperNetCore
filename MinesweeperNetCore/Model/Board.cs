@@ -63,9 +63,9 @@ namespace MinesweeperNetCore.Model
 
         }
 
-        internal TileRevealResult RevealTile(int rowNumber, int columnNumber)
+        internal TileChangeResult RevealTile(int rowNumber, int columnNumber)
         {
-            TileRevealResult result = TileRevealResult.AlreadyRevealed;
+            TileChangeResult result = TileChangeResult.AlreadyRevealed;
             var currentTile = this[rowNumber, columnNumber];
             if (!currentTile.IsVisible)
             {
@@ -73,7 +73,7 @@ namespace MinesweeperNetCore.Model
                 this[rowNumber, columnNumber] = currentTile;
                 if (currentTile.Value != Game.MineValue)
                 {
-                    result = TileRevealResult.Revealed;
+                    result = TileChangeResult.Revealed;
                     if (currentTile.Value == Game.BlankTileValue)
                     {
                         RevealSurroundingTiles(rowNumber, columnNumber);
@@ -81,7 +81,7 @@ namespace MinesweeperNetCore.Model
                 }
                 else
                 {
-                    result = TileRevealResult.Mine;
+                    result = TileChangeResult.Mine;
                 }
             }
             return result;
@@ -343,26 +343,27 @@ namespace MinesweeperNetCore.Model
             }
         }
 
-        public bool FlagTile(int row, int column)
+        public TileChangeResult FlagTile(int row, int column)
         {
-            bool couldFlagTile = false;
+            var result = TileChangeResult.FlagUnavailable;
             var currentTile = this[row, column];
             if (currentTile.IsVisible == false)
             {
-                couldFlagTile = true;
                 currentTile.IsFlagged = !currentTile.IsFlagged;
                 if (currentTile.IsFlagged == true)
                 {
                     numberOfFlags += 1;
+                    result = TileChangeResult.Flagged;
                 }
                 else
                 {
                     numberOfFlags -= 1;
+                    result = TileChangeResult.UnFlagged;
                 }
                 this[row, column] = currentTile;
             }
 
-            return couldFlagTile;
+            return result;
         }
 
         private int GenerateMineTileValue()

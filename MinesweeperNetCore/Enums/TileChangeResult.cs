@@ -4,10 +4,13 @@ using System.Text;
 
 namespace MinesweeperNetCore.Enums
 {
-    public enum TileRevealResult
+    public enum TileChangeResult
     {
         AlreadyRevealed,
         Mine,
-        Revealed
+        Revealed,
+        UnFlagged,
+        Flagged,
+        FlagUnavailable
     }
 }
