@@ -105,16 +105,16 @@ namespace MinesweeperNetCore.Model
                     {
                         RevealSurroundingTiles(row, column);
                     }
-                } 
+                }
             }
-            
+
             // You don't reveal the mine
         }
 
         private List<(int row, int column)> GetSurroundingTilePositions(int row, int column)
         {
             List<(int row, int column)> positionsList = new List<(int row, int column)>();
-            
+
             var result = TileHelper.GetPositionAbove(row, column);
             if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Above) == false)
             {
@@ -180,11 +180,15 @@ namespace MinesweeperNetCore.Model
             {
                 for (int column = 0; column < this.Length; column++)
                 {
-                    this[row, column] = new Tile
+                    var currentTile = this[row, column];
+                    if (currentTile.Value != Game.MineValue)
                     {
-                        Value = CheckForNearbyMines(row, column),
-                        IsVisible = false
-                    };
+                        this[row, column] = new Tile
+                        {
+                            Value = CheckForNearbyMines(row, column),
+                            IsVisible = false
+                        };
+                    }
                 }
             }
         }
@@ -207,7 +211,7 @@ namespace MinesweeperNetCore.Model
             int rightColumn = column + 1;
 
 
-            
+
             var result = TileHelper.GetPositionTopLeftOf(row, column);
 
             if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopLeft) == false)
@@ -218,7 +222,7 @@ namespace MinesweeperNetCore.Model
                 }
             }
 
-            
+
             result = TileHelper.GetPositionTopRightOf(row, column);
 
             if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopRight) == false)
@@ -229,8 +233,8 @@ namespace MinesweeperNetCore.Model
                 }
             }
 
-            
-             result = TileHelper.GetPositionBottomLeftOf(row, column);
+
+            result = TileHelper.GetPositionBottomLeftOf(row, column);
 
             if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.BottomLeft) == false)
             {
@@ -336,9 +340,8 @@ namespace MinesweeperNetCore.Model
 
         private int GenerateMineTileValue()
         {
-            // Random number from -1 to random number from 6 to 10
-            // so there is a 8.33%-12.5% chance of the tile being a mine
-            return rnd.Next(-1, rnd.Next(6, 12));
+
+            return rnd.Next(-1, 1);
         }
     }
 }
