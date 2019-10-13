@@ -1,4 +1,5 @@
 ﻿using MinesweeperNetCore.Enums;
+using MinesweeperNetCore.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -85,14 +86,11 @@ namespace MinesweeperNetCore
 
         private static void DisplayMainMenuOptions()
         {
-            PrintOption('1', "Start new game");
-            PrintOption('q', "Quit");
+            OptionHelper.PrintOption('1', "Start new game");
+            OptionHelper.PrintOption('q', "Quit");
             CurrentState = GameState.MainMenu;
         }
 
-        private static void PrintOption(char optionKey, string optionDescription)
-        {
-            Console.WriteLine($"[{Char.ToUpper(optionKey)}] {optionDescription}");
-        }
+        
     }
 }

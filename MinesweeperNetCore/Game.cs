@@ -17,11 +17,11 @@ namespace MinesweeperNetCore
 
         bool hasGameEnded = false;
         Board gameBoard;
-        
+
         TileRevealResult lastRevealResult = TileRevealResult.Revealed;
         int lastRow = 0;
         int lastColumn = 0;
-        
+
         // Program will create this object then start a game with it. When game ends, object is destroyed 
         // => Context returns to program, which will switch the state back to none 
         internal void Start()
@@ -79,12 +79,46 @@ namespace MinesweeperNetCore
 
         private void RequestUserInput()
         {
+            BoardOption boardOption = PickBoardOption();
             int inputRow = InputLoop("Enter row number (Vertical):");
             int inputColumn = InputLoop("Enter Column Number (Horizontal): ");
             lastRow = inputRow;
             lastColumn = inputColumn;
             // Takeaway 1 from inputs because the board array is zero-indexed
             HandlePositionInput(inputRow - 1, inputColumn - 1);
+        }
+
+        private BoardOption PickBoardOption()
+        {
+            bool isValidOption = false;
+            BoardOption boardOption = BoardOption.Flag;
+            while (!isValidOption)
+            {
+                OptionHelper.PrintOption('R', "Reveal Tile");
+                OptionHelper.PrintOption('F', "Flag Tile");
+                string input = Console.ReadLine();
+                bool isChar = char.TryParse(input.Trim(), out char inputChar);
+                if (isChar)
+                {
+                    if (inputChar == 'R')
+                    {
+                        isValidOption = true;
+                        boardOption = BoardOption.Reveal;
+                    }
+                    else if (inputChar == 'F')
+                    {
+                        isValidOption = true;
+                        boardOption = BoardOption.Flag;
+                    }
+                }
+                if (!isValidOption)
+                {
+                    Console.WriteLine("You didn't pick one of the listed options. Please try again.");
+                }
+            }
+
+            return boardOption;
+
         }
 
         private void HandlePositionInput(int rowNumber, int columnNumber)
