@@ -50,6 +50,7 @@ namespace MinesweeperNetCore
 
             while (!wasCorrectInput)
             {
+                Console.WriteLine(inputMessage);
                 string input = Console.ReadLine();
                 InputParseResult parseResult = CoordinateInputHelper.ParseInput(input);
                 if (parseResult.ErrorResult != Enums.InputParseError.None)
