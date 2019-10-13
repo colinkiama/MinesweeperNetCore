@@ -86,11 +86,16 @@ namespace MinesweeperNetCore
 
         private static void DisplayMainMenuOptions()
         {
+            DisplayTitleAndCredits();
             OptionHelper.PrintOption('1', "Start new game");
             OptionHelper.PrintOption('q', "Quit");
             CurrentState = GameState.MainMenu;
         }
 
-        
+        private static void DisplayTitleAndCredits()
+        {
+            Console.WriteLine("Minesweeper (on .Net Core!) - Created by Colin Kiama, 2019");
+            Console.WriteLine("Check out my Github: http://www.github.com/colinkiama");
+        }
     }
 }

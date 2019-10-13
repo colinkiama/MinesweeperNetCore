@@ -13,7 +13,7 @@ namespace MinesweeperNetCore.Model
         Tile[,] _boardArray;
         int numberOfMines = 0;
         List<(int row, int column)> MinePositions = new List<(int, int)>();
-
+        bool isFirstTurn = true;
 
         Random rnd = new Random();
         private int numberOfFlags;
@@ -67,6 +67,15 @@ namespace MinesweeperNetCore.Model
         {
             TileChangeResult result = TileChangeResult.AlreadyRevealed;
             var currentTile = this[rowNumber, columnNumber];
+            
+            // No mines on first turn, otherwise, it wouldn't be fun ;)
+            if (isFirstTurn)
+            {
+                currentTile.Value = CheckForNearbyMines(rowNumber, columnNumber);
+                this[rowNumber, columnNumber] = currentTile;
+                isFirstTurn = false;
+            }
+
             if (!currentTile.IsVisible)
             {
                 currentTile.IsVisible = true;
