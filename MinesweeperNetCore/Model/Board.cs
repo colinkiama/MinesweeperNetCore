@@ -15,6 +15,7 @@ namespace MinesweeperNetCore.Model
         List<(int row, int column)> MinePositions = new List<(int, int)>();
 
         Random rnd = new Random();
+        private int numberOfFlags;
 
         public int Length { get; private set; }
         public Tile this[int indexRow, int indexColumn]
@@ -349,6 +350,14 @@ namespace MinesweeperNetCore.Model
             {
                 couldFlagTile = true;
                 currentTile.IsFlagged = !currentTile.IsFlagged;
+                if (currentTile.IsFlagged == true)
+                {
+                    numberOfFlags += 1;
+                }
+                else
+                {
+                    numberOfFlags -= 1;
+                }
                 this[row, column] = currentTile;
             }
 
@@ -360,6 +369,25 @@ namespace MinesweeperNetCore.Model
             
            // 10%-20% chance of tile being a mine
             return rnd.Next(-1, rnd.Next(4, 9));
+        }
+
+        public bool CheckIfPlayerHasWon()
+        {
+            return CheckIfAllMinesAreFlagged() && numberOfMines == numberOfFlags;
+        }
+
+        private bool CheckIfAllMinesAreFlagged()
+        {
+            bool areAllMinesFlagged = true;
+            foreach (var minePosition in MinePositions)
+            {
+                if (this[minePosition.row, minePosition.column].IsFlagged == false)
+                {
+                    areAllMinesFlagged = false;
+                    break;
+                }
+            }
+            return areAllMinesFlagged;
         }
     }
 }
