@@ -6,14 +6,27 @@ namespace MinesweeperNetCore.Model
 {
     public class Board
     {
-        int[,] _boardArray = new int[9, 9];
+        Tile[,] _boardArray = new Tile[9, 9];
+        int numberOfMines = 0;
         Random rnd = new Random();
 
         public int Width => _boardArray.Length;
-        public int this[int indexRow, int indexColumn]
+        public Tile this[int indexRow, int indexColumn]
         {
             get { return _boardArray[indexRow, indexColumn]; }
             set { _boardArray[indexRow, indexColumn] = value; }
+        }
+
+
+        public void DisplayBoard()
+        {
+            for (int row = 0; row < this.Width; row++)
+            {
+                for (int column = 0; column < this.Width; column++)
+                {
+
+                }
+            }
         }
 
         internal void FillBoard()
@@ -28,7 +41,12 @@ namespace MinesweeperNetCore.Model
             {
                 for (int column = 0; column < this.Width; column++)
                 {
-                    this[row, column] = CheckForNearbyMines(row, column);
+
+                    this[row, column] = new Tile
+                    {
+                        Value = CheckForNearbyMines(row, column),
+                        IsVisible = false
+                    };
                 }
             }
         }
@@ -54,7 +72,7 @@ namespace MinesweeperNetCore.Model
             // Up-Left Diagonal
             if (upRow > -1 && leftColumn > -1)
             {
-                if (this[upRow, leftColumn] == Game.MineValue)
+                if (this[upRow, leftColumn].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
@@ -63,16 +81,16 @@ namespace MinesweeperNetCore.Model
             // Up-Right Diagonal
             if (upRow > -1 && rightColumn < this.Width)
             {
-                if (this[upRow, rightColumn] == Game.MineValue)
+                if (this[upRow, rightColumn].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
             }
 
             // Down-Left Diagonal
-            if (downRow < this.Width && leftColumn > - 1)
+            if (downRow < this.Width && leftColumn > -1)
             {
-                if (this[downRow, leftColumn] == Game.MineValue)
+                if (this[downRow, leftColumn].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
@@ -82,7 +100,7 @@ namespace MinesweeperNetCore.Model
             // Down-Right Diagonal
             if (downRow < this.Width && rightColumn < this.Width)
             {
-                if (this[downRow, rightColumn] == Game.MineValue)
+                if (this[downRow, rightColumn].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
@@ -99,7 +117,7 @@ namespace MinesweeperNetCore.Model
 
             if (upRow > -1)
             {
-                if (this[upRow, column] == Game.MineValue)
+                if (this[upRow, column].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
@@ -109,7 +127,7 @@ namespace MinesweeperNetCore.Model
             int downRow = row + 1;
             if (downRow < this.Width)
             {
-                if (this[downRow, column] == Game.MineValue)
+                if (this[downRow, column].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
@@ -125,7 +143,7 @@ namespace MinesweeperNetCore.Model
             int leftColumn = column - 1;
             if (leftColumn > -1)
             {
-                if (this[row, leftColumn] == Game.MineValue)
+                if (this[row, leftColumn].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
@@ -136,7 +154,7 @@ namespace MinesweeperNetCore.Model
             int rightColumn = column + 1;
             if (rightColumn < this.Width)
             {
-                if (this[row, rightColumn] == Game.MineValue)
+                if (this[row, rightColumn].Value == Game.MineValue)
                 {
                     mines += 1;
                 }
@@ -152,16 +170,22 @@ namespace MinesweeperNetCore.Model
             {
                 for (int column = 0; column < _boardArray.Length; column++)
                 {
-                    int tileValue = GeneratedTileValue();
+                    int tileValue = GenerateMineTileValue();
                     if (tileValue == Game.MineValue)
                     {
-                        _boardArray[row, column] = tileValue;
+                        _boardArray[row, column] = new Tile
+                        {
+                            Value = tileValue,
+                            IsVisible = false
+                        };
+
+                        numberOfMines += 1;
                     }
                 }
             }
         }
 
-        private int GeneratedTileValue()
+        private int GenerateMineTileValue()
         {
             // Random number from -1 to random number from 6 to 10
             // so there is a 8.33%-12.5% chance of the tile being a mine
