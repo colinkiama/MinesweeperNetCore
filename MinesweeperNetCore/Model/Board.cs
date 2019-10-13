@@ -45,12 +45,50 @@ namespace MinesweeperNetCore.Model
         private int CheckForDiagonalMines(int row, int column)
         {
             int mines = 0;
+            int upRow = row - 1;
+            int downRow = row + 1;
+            int leftColumn = column - 1;
+            int rightColumn = column + 1;
+
+
+            // Up-Left Diagonal
+            if (upRow > -1 && leftColumn > -1)
+            {
+                if (this[upRow, leftColumn] == Game.MineValue)
+                {
+                    mines += 1;
+                }
+            }
+
+            // Up-Right Diagonal
+
             return mines;
         }
 
         private int CheckForVerticalMines(int row, int column)
         {
             int mines = 0;
+
+            // Up
+            int upRow = row - 1;
+
+            if (upRow > -1)
+            {
+                if (this[upRow, column] == Game.MineValue)
+                {
+                    mines += 1;
+                }
+            }
+
+            // Down
+            int downRow = row + 1;
+            if (downRow < this.Width)
+            {
+                if (this[downRow, column] == Game.MineValue)
+                {
+                    mines += 1;
+                }
+            }
             return mines;
         }
 
@@ -62,7 +100,7 @@ namespace MinesweeperNetCore.Model
             int leftColumn = column - 1;
             if (leftColumn > -1)
             {
-                if (this[row, column] == Game.MineValue)
+                if (this[row, leftColumn] == Game.MineValue)
                 {
                     mines += 1;
                 }
