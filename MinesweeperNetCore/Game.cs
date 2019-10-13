@@ -32,9 +32,10 @@ namespace MinesweeperNetCore
 
         private void RequestUserInput()
         {
-            int rowNumber = InputLoop("Enter row number (Vertical):");
-            int columnNumber = InputLoop("Enter Column Number (Horizontal: ");
-            HandlePositionInput(rowNumber, columnNumber);
+            int inputRow = InputLoop("Enter row number (Vertical):");
+            int inputColumn = InputLoop("Enter Column Number (Horizontal: ");
+            // Takeaway 1 from inputs because the board array is zero-indexed
+            HandlePositionInput(inputRow - 1, inputColumn -1);
 
         }
 
