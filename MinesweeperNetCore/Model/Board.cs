@@ -61,7 +61,32 @@ namespace MinesweeperNetCore.Model
             }
 
             // Up-Right Diagonal
+            if (upRow > -1 && rightColumn < this.Width)
+            {
+                if (this[upRow, rightColumn] == Game.MineValue)
+                {
+                    mines += 1;
+                }
+            }
 
+            // Down-Left Diagonal
+            if (downRow < this.Width && leftColumn > - 1)
+            {
+                if (this[downRow, leftColumn] == Game.MineValue)
+                {
+                    mines += 1;
+                }
+            }
+
+
+            // Down-Right Diagonal
+            if (downRow < this.Width && rightColumn < this.Width)
+            {
+                if (this[downRow, rightColumn] == Game.MineValue)
+                {
+                    mines += 1;
+                }
+            }
             return mines;
         }
 
