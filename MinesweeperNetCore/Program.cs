@@ -64,7 +64,13 @@ namespace MinesweeperNetCore
 
         private static void StartGame()
         {
-            
+            Game currentGame = new Game();
+            CurrentState = GameState.InGame;
+            currentGame.Start();
+
+            // Game ends
+            CurrentState = GameState.None;
+
         }
 
         private static void DisplayInvalidOptionMessage()
