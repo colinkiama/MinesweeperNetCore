@@ -1,10 +1,13 @@
 ﻿using MinesweeperNetCore.Enums;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace MinesweeperNetCore
 {
     class Program
     {
+        static readonly List<char> availableOptionCharacters = new List<char>{ '1', 'q' };
         private static bool hasUserQuitProgram = false;
         public static GameState CurrentState = GameState.None;
         static void Main(string[] args)
@@ -25,18 +28,43 @@ namespace MinesweeperNetCore
                 }
                 
             }
+            Console.WriteLine("See you next time! ;)");
+            Thread.Sleep(3000);
         }
 
         private static void ReadUserOptionInput()
         {
             string optionInput = Console.ReadLine();
-            var treatedInput = optionInput.Trim();
+            var trimmedInput = optionInput.Trim();
             char parsedOption;
-            bool isValidChar = char.TryParse(treatedInput, out parsedOption);
+            bool isValidChar = char.TryParse(trimmedInput, out parsedOption);
             if (!isValidChar || !CheckIfValidOption(parsedOption))
             {
                 DisplayInvalidOptionMessage();
             }
+            else
+            {
+                HandleOption(parsedOption);
+            }
+        }
+
+        private static void HandleOption(char parsedOption)
+        {
+            switch (parsedOption)
+            {
+                case '1':
+                    StartGame();
+                    CurrentState = GameState.InGame;
+                    break;
+                case 'q':
+                    hasUserQuitProgram = true;
+                    break;
+            }
+        }
+
+        private static void StartGame()
+        {
+            
         }
 
         private static void DisplayInvalidOptionMessage()
@@ -47,7 +75,7 @@ namespace MinesweeperNetCore
 
         private static bool CheckIfValidOption(char parsedOption)
         {
-            return false;
+            return availableOptionCharacters.Contains(parsedOption);
         }
 
         private static void DisplayMainMenuOptions()
