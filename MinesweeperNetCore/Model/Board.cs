@@ -84,12 +84,83 @@ namespace MinesweeperNetCore.Model
 
         private void RevealSurroundingTiles(int rowNumber, int columnNumber)
         {
-            List<(int row, int column)> r = GetSurroundingTilePositions(rowNumber, columnNumber);
+            List<(int row, int column)> surroundingTiles = GetSurroundingTilePositions(rowNumber, columnNumber);
+            foreach (var tile in surroundingTiles)
+            {
+                AttemptToRevealSurroundingTile(tile.row, tile.column);
+            }
+        }
+
+        private void AttemptToRevealSurroundingTile(int row, int column)
+        {
+            var currentTile = this[row, column];
+            if (currentTile.Value != Game.MineValue)
+            {
+                currentTile.IsVisible = true;
+                if (currentTile.Value == Game.BlankTileValue)
+                {
+                    RevealSurroundingTiles(row, column);
+                }
+            }
+            
+            // You don't reveal the mine
         }
 
         private List<(int row, int column)> GetSurroundingTilePositions(int row, int column)
         {
+            List<(int row, int column)> positionsList = new List<(int row, int column)>();
             
+            var result = TileHelper.GetPositionAbove(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Above) == false)
+            {
+                positionsList.Add(result);
+            }
+
+
+            result = TileHelper.GetPositionBelow(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Below) == false)
+            {
+                positionsList.Add(result);
+            }
+
+
+            result = TileHelper.GetPositionLeftOf(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Left) == false)
+            {
+                positionsList.Add(result);
+            }
+
+            result = TileHelper.GetPositionRightOf(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Right) == false)
+            {
+                positionsList.Add(result);
+            }
+
+            result = TileHelper.GetPositionTopLeftOf(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.TopLeft) == false)
+            {
+                positionsList.Add(result);
+            }
+
+            result = TileHelper.GetPositionTopRightOf(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.TopRight) == false)
+            {
+                positionsList.Add(result);
+            }
+
+            result = TileHelper.GetPositionBottomLeftOf(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.BottomLeft) == false)
+            {
+                positionsList.Add(result);
+            }
+
+            result = TileHelper.GetPositionBottomRightOf(row, column);
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.BottomRight) == false)
+            {
+                positionsList.Add(result);
+            }
+
+            return positionsList;
         }
 
         internal void FillBoard()
@@ -134,7 +205,7 @@ namespace MinesweeperNetCore.Model
             
             var result = TileHelper.GetPositionTopLeftOf(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopLeft))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopLeft) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
@@ -145,7 +216,7 @@ namespace MinesweeperNetCore.Model
             
             result = TileHelper.GetPositionTopRightOf(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopRight))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopRight) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
@@ -156,7 +227,7 @@ namespace MinesweeperNetCore.Model
             
              result = TileHelper.GetPositionBottomLeftOf(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.BottomLeft))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.BottomLeft) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
@@ -167,7 +238,7 @@ namespace MinesweeperNetCore.Model
 
             result = TileHelper.GetPositionBottomRightOf(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.BottomRight))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.BottomRight) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
@@ -185,7 +256,7 @@ namespace MinesweeperNetCore.Model
             // Up
             var result = TileHelper.GetPositionAbove(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Above))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Above) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
@@ -196,7 +267,7 @@ namespace MinesweeperNetCore.Model
             // Down
             result = TileHelper.GetPositionBelow(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Below))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Below) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
@@ -213,7 +284,7 @@ namespace MinesweeperNetCore.Model
             // Left
             var result = TileHelper.GetPositionLeftOf(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Left))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Left) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
@@ -225,7 +296,7 @@ namespace MinesweeperNetCore.Model
             // Right
             result = TileHelper.GetPositionRightOf(row, column);
 
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Right))
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Right) == false)
             {
                 if (this[result.row, result.column].Value == Game.MineValue)
                 {
