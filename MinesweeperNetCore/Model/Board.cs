@@ -6,26 +6,31 @@ namespace MinesweeperNetCore.Model
 {
     public class Board
     {
-        Tile[,] _boardArray = new Tile[9, 9];
+        Tile[,] _boardArray;
         int numberOfMines = 0;
         Random rnd = new Random();
 
-        public int Width => _boardArray.Length;
+        public int Length { get; private set; }
         public Tile this[int indexRow, int indexColumn]
         {
             get { return _boardArray[indexRow, indexColumn]; }
             set { _boardArray[indexRow, indexColumn] = value; }
         }
 
-
+        public Board(int boardWidth)
+        {
+            Length = boardWidth;
+            _boardArray = new Tile[9, 9];
+        }
         public void DisplayBoard()
         {
-            for (int row = 0; row < this.Width; row++)
+            for (int row = 0; row < this.Length; row++)
             {
-                for (int column = 0; column < this.Width; column++)
+                for (int column = 0; column < this.Length; column++)
                 {
-
+                    Console.Write($"{this[row, column]} ");
                 }
+                Console.WriteLine();
             }
         }
 
@@ -37,9 +42,9 @@ namespace MinesweeperNetCore.Model
 
         private void IdentifyNeighbourTiles()
         {
-            for (int row = 0; row < this.Width; row++)
+            for (int row = 0; row < this.Length; row++)
             {
-                for (int column = 0; column < this.Width; column++)
+                for (int column = 0; column < this.Length; column++)
                 {
 
                     this[row, column] = new Tile
@@ -79,7 +84,7 @@ namespace MinesweeperNetCore.Model
             }
 
             // Up-Right Diagonal
-            if (upRow > -1 && rightColumn < this.Width)
+            if (upRow > -1 && rightColumn < this.Length)
             {
                 if (this[upRow, rightColumn].Value == Game.MineValue)
                 {
@@ -88,7 +93,7 @@ namespace MinesweeperNetCore.Model
             }
 
             // Down-Left Diagonal
-            if (downRow < this.Width && leftColumn > -1)
+            if (downRow < this.Length && leftColumn > -1)
             {
                 if (this[downRow, leftColumn].Value == Game.MineValue)
                 {
@@ -98,7 +103,7 @@ namespace MinesweeperNetCore.Model
 
 
             // Down-Right Diagonal
-            if (downRow < this.Width && rightColumn < this.Width)
+            if (downRow < this.Length && rightColumn < this.Length)
             {
                 if (this[downRow, rightColumn].Value == Game.MineValue)
                 {
@@ -125,7 +130,7 @@ namespace MinesweeperNetCore.Model
 
             // Down
             int downRow = row + 1;
-            if (downRow < this.Width)
+            if (downRow < this.Length)
             {
                 if (this[downRow, column].Value == Game.MineValue)
                 {
@@ -152,7 +157,7 @@ namespace MinesweeperNetCore.Model
 
             // Right
             int rightColumn = column + 1;
-            if (rightColumn < this.Width)
+            if (rightColumn < this.Length)
             {
                 if (this[row, rightColumn].Value == Game.MineValue)
                 {
@@ -166,9 +171,9 @@ namespace MinesweeperNetCore.Model
 
         private void GenerateMines()
         {
-            for (int row = 0; row < _boardArray.Length; row++)
+            for (int row = 0; row < this.Length; row++)
             {
-                for (int column = 0; column < _boardArray.Length; column++)
+                for (int column = 0; column < this.Length; column++)
                 {
                     int tileValue = GenerateMineTileValue();
                     if (tileValue == Game.MineValue)

@@ -7,17 +7,30 @@ namespace MinesweeperNetCore
 {
     public class Game
     {
+        int gameBoardSize = 9;
         public const int MineValue = -1;
         public const int BlankTileValue = 0;
 
-
-        Board gameBoard = new Board();
+        bool hasGameEnded = false;
+        Board gameBoard;
         // Program will create this object then start a game with it. When game ends, object is destroyed 
         // => Context returns to program, which will switch the state back to none 
         internal void Start()
         {
+            gameBoard = new Board(gameBoardSize);
             Console.Clear();
-            gameBoard.FillBoard();
+            while (!hasGameEnded)
+            {
+                gameBoard.FillBoard();
+                gameBoard.DisplayBoard();
+                RequestUserInput();
+            }
+        }
+
+        private void RequestUserInput()
+        {
+            Console.WriteLine("Enter position");
+            string input = Console.ReadLine();
         }
     }
 }
