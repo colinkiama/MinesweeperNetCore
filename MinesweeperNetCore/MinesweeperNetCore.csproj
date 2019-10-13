@@ -3,6 +3,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Authors>Colin Kiama</Authors>
+    <Description>It's Minesweeper as a command line app!</Description>
+    <Copyright>Colin Kiama - 2019</Copyright>
+    <PackageProjectUrl>https://github.com/colinkiama/MinesweeperNetCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/colinkiama/MinesweeperNetCore</RepositoryUrl>
+    <PackageTags>Minesweeper, netcore</PackageTags>
+    <Product>Minesweeper</Product>
   </PropertyGroup>
 
 </Project>
