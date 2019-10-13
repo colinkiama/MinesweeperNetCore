@@ -24,14 +24,36 @@ namespace MinesweeperNetCore.Model
         }
         public void DisplayBoard()
         {
+            DisplayColumns();
             for (int row = 0; row < this.Length; row++)
             {
+                Console.Write($"{row + 1}| ");
+
                 for (int column = 0; column < this.Length; column++)
                 {
+
                     Console.Write($"{this[row, column]} ");
                 }
                 Console.WriteLine();
             }
+        }
+
+        private void DisplayColumns()
+        {
+            Console.Write("   ");
+            for (int i = 0; i < 9; i++)
+            {
+                Console.Write($"{i + 1}|");
+            }
+            Console.WriteLine();
+
+            Console.Write("   ");
+            for (int i = 0; i < 9; i++)
+            {
+                Console.Write("= ");
+            }
+            Console.WriteLine();
+
         }
 
         internal void FillBoard()

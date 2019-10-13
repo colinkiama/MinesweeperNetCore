@@ -29,8 +29,12 @@ namespace MinesweeperNetCore
 
         private void RequestUserInput()
         {
-            Console.WriteLine("Enter position");
-            string input = Console.ReadLine();
+            bool wasCorrectInput = false;
+            while (!wasCorrectInput)
+            {
+                Console.WriteLine("Enter position");
+                string input = Console.ReadLine();
+            }
         }
     }
 }
