@@ -42,10 +42,27 @@ namespace MinesweeperNetCore
                     DisplayGameOverMessage();
                     continue;
                 }
+                else
+                {
+                    bool hasPlayerWon = gameBoard.CheckIfPlayerHasWon();
+                    if (hasPlayerWon)
+                    {
+                        hasGameEnded = true;
+                        DisplayGameWinMessage();
+                        continue;
+                    }
+
+                }
                 RequestUserInput();
             }
 
             Console.Clear();
+        }
+
+        private void DisplayGameWinMessage()
+        {
+            Console.WriteLine("You've flagged all the mines and have revealed all the other tiles. You win!");
+            Thread.Sleep(3000);
         }
 
         private void DisplayGameOverMessage()

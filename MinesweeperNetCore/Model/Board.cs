@@ -14,6 +14,7 @@ namespace MinesweeperNetCore.Model
         int numberOfMines = 0;
         List<(int row, int column)> MinePositions = new List<(int, int)>();
 
+
         Random rnd = new Random();
         private int numberOfFlags;
 
@@ -366,14 +367,33 @@ namespace MinesweeperNetCore.Model
 
         private int GenerateMineTileValue()
         {
-            
-           // 10%-20% chance of tile being a mine
+
+            // 10%-20% chance of tile being a mine
             return rnd.Next(-1, rnd.Next(4, 9));
         }
 
         public bool CheckIfPlayerHasWon()
         {
-            return CheckIfAllMinesAreFlagged() && numberOfMines == numberOfFlags;
+            return CheckIfAllMinesAreFlagged() && CheckIfAllNonMinesAreRevealed() && numberOfMines == numberOfFlags;
+        }
+
+        private bool CheckIfAllNonMinesAreRevealed()
+        {
+            int nonMinesToReveal = this.Length * this.Length - numberOfMines;
+            int revealedNonMines = 0;
+            for (int row = 0; row < this.Length; row++)
+            {
+                for (int Column = 0; Column < this.Length; Column++)
+                {
+                    var currentTile = this[row, Column];
+                    if (currentTile.Value != Game.MineValue && currentTile.IsVisible == true)
+                    {
+                        revealedNonMines += 1;
+                    }
+                }
+            }
+
+            return nonMinesToReveal == revealedNonMines;
         }
 
         private bool CheckIfAllMinesAreFlagged()
