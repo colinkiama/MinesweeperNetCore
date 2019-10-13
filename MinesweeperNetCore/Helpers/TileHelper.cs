@@ -68,7 +68,7 @@ namespace MinesweeperNetCore.Helpers
 
         public static bool CheckIfPositionIsOutOfBounds(int row, int column, PositionOffset positionOffset)
         {
-            bool isOutOfBounds = false;
+            bool isOutOfBounds = true;
             switch (positionOffset)
             {
                 case PositionOffset.Above:

@@ -66,6 +66,7 @@ namespace MinesweeperNetCore.Model
             if (!currentTile.IsVisible)
             {
                 currentTile.IsVisible = true;
+                this[rowNumber, columnNumber] = currentTile;
                 if (currentTile.Value != Game.MineValue)
                 {
                     result = TileRevealResult.Revealed;
@@ -97,6 +98,7 @@ namespace MinesweeperNetCore.Model
             if (currentTile.Value != Game.MineValue)
             {
                 currentTile.IsVisible = true;
+                this[row, column] = currentTile;
                 if (currentTile.Value == Game.BlankTileValue)
                 {
                     RevealSurroundingTiles(row, column);
@@ -111,51 +113,51 @@ namespace MinesweeperNetCore.Model
             List<(int row, int column)> positionsList = new List<(int row, int column)>();
             
             var result = TileHelper.GetPositionAbove(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Above) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Above) == false)
             {
                 positionsList.Add(result);
             }
 
 
             result = TileHelper.GetPositionBelow(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Below) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Below) == false)
             {
                 positionsList.Add(result);
             }
 
 
             result = TileHelper.GetPositionLeftOf(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Left) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Left) == false)
             {
                 positionsList.Add(result);
             }
 
             result = TileHelper.GetPositionRightOf(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.Right) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.Right) == false)
             {
                 positionsList.Add(result);
             }
 
             result = TileHelper.GetPositionTopLeftOf(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.TopLeft) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopLeft) == false)
             {
                 positionsList.Add(result);
             }
 
             result = TileHelper.GetPositionTopRightOf(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.TopRight) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.TopRight) == false)
             {
                 positionsList.Add(result);
             }
 
             result = TileHelper.GetPositionBottomLeftOf(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.BottomLeft) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.BottomLeft) == false)
             {
                 positionsList.Add(result);
             }
 
             result = TileHelper.GetPositionBottomRightOf(row, column);
-            if (TileHelper.CheckIfPositionIsOutOfBounds(result.column, result.row, PositionOffset.BottomRight) == false)
+            if (TileHelper.CheckIfPositionIsOutOfBounds(result.row, result.column, PositionOffset.BottomRight) == false)
             {
                 positionsList.Add(result);
             }

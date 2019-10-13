@@ -21,10 +21,10 @@ namespace MinesweeperNetCore
         internal void Start()
         {
             gameBoard = new Board(gameBoardSize);
+            gameBoard.FillBoard();
             Console.Clear();
             while (!hasGameEnded)
             {
-                gameBoard.FillBoard();
                 gameBoard.DisplayBoard();
                 RequestUserInput();
             }
@@ -35,7 +35,7 @@ namespace MinesweeperNetCore
             int inputRow = InputLoop("Enter row number (Vertical):");
             int inputColumn = InputLoop("Enter Column Number (Horizontal: ");
             // Takeaway 1 from inputs because the board array is zero-indexed
-            HandlePositionInput(inputRow - 1, inputColumn -1);
+            HandlePositionInput(inputRow - 1, inputColumn - 1);
 
         }
 
@@ -69,7 +69,7 @@ namespace MinesweeperNetCore
             return validInput;
         }
 
-       
+
 
         private void DisplayErrorMessage(InputParseError errorResult, string input)
         {
