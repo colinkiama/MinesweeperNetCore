@@ -2,6 +2,7 @@
 using MinesweeperNetCore.Structs;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace MinesweeperNetCore.Model
@@ -60,7 +61,35 @@ namespace MinesweeperNetCore.Model
 
         internal TileRevealResult RevealTile(int rowNumber, int columnNumber)
         {
-            throw new NotImplementedException();
+            TileRevealResult result = TileRevealResult.AlreadyRevealed;
+            var currentTile = this[rowNumber, columnNumber];
+            if (!currentTile.IsVisible)
+            {
+                currentTile.IsVisible = true;
+                if (currentTile.Value != Game.MineValue)
+                {
+                    result = TileRevealResult.Revealed;
+                    if (currentTile.Value == Game.BlankTileValue)
+                    {
+                        RevealSurroundingTiles(rowNumber, columnNumber);
+                    }
+                }
+                else
+                {
+                    result = TileRevealResult.Mine;
+                }
+            }
+            return result;
+        }
+
+        private void RevealSurroundingTiles(int rowNumber, int columnNumber)
+        {
+            List<(int row, int column)> r = GetSurroundingTilePositions();
+        }
+
+        private List<(int row, int column)> GetSurroundingTilePositions()
+        {
+            
         }
 
         internal void FillBoard()
