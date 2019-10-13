@@ -7,6 +7,7 @@ namespace MinesweeperNetCore.Structs
     public struct Tile
     {
         public bool IsVisible;
+        public bool IsFlagged;
         public int Value;
 
         public override string ToString()
@@ -16,6 +17,10 @@ namespace MinesweeperNetCore.Structs
             {
                 returnString = GetStringIfVisible();
                 
+            }
+            else if (IsFlagged)
+            {
+                returnString = "F";
             }
             else
             {

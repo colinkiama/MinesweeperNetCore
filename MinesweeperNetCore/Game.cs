@@ -68,12 +68,10 @@ namespace MinesweeperNetCore
             lastColumn = inputColumn;
             // Takeaway 1 from inputs because the board array is zero-indexed
             HandlePositionInput(inputRow - 1, inputColumn - 1);
-
         }
 
         private void HandlePositionInput(int rowNumber, int columnNumber)
         {
-
             lastRevealResult = gameBoard.RevealTile(rowNumber, columnNumber);
         }
 
