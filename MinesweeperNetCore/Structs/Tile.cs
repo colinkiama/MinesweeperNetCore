@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MinesweeperNetCore.Model
+namespace MinesweeperNetCore.Structs
 {
     public struct Tile
     {

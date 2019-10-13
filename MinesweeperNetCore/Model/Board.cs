@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MinesweeperNetCore.Structs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

@@ -1,4 +1,7 @@
-﻿using MinesweeperNetCore.Model;
+﻿using MinesweeperNetCore.Enums;
+using MinesweeperNetCore.Helpers;
+using MinesweeperNetCore.Model;
+using MinesweeperNetCore.Structs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,9 +35,42 @@ namespace MinesweeperNetCore
             bool wasCorrectInput = false;
             while (!wasCorrectInput)
             {
-                Console.WriteLine("Enter position");
+                Console.WriteLine("Enter row number (Vertical): ");
+                Console.Write("Enter Column Number (Horizontal: ");
                 string input = Console.ReadLine();
+                var parseResult = CoordinateInputHelper.ParseInput(input);
+                if (parseResult.ErrorResult == Enums.InputParseError.None)
+                {
+                    wasCorrectInput = HandleParseResult(parseResult);
+                }
+                else
+                {
+                    DisplayErrorMessage(parseResult.ErrorResult, input);
+                }
             }
         }
+
+        private bool HandleParseResult(InputParseResult parseResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DisplayErrorMessage(InputParseError errorResult, string input)
+        {
+            switch (errorResult)
+            {
+                case InputParseError.NumberOutOfRange:
+                    Console.WriteLine($"The value you entered: \"{input}\" is outside of the range between" +
+                        $"1 and {gameBoardSize}");
+                    break;
+                case InputParseError.NotANumber:
+                    Console.WriteLine($"The value you entered: \"{input}\" is not an Integer number");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+       
     }
 }
