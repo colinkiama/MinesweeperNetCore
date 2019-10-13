@@ -12,6 +12,8 @@ namespace MinesweeperNetCore.Model
     {
         Tile[,] _boardArray;
         int numberOfMines = 0;
+        List<(int row, int column)> MinePositions = new List<(int, int)>();
+
         Random rnd = new Random();
 
         public int Length { get; private set; }
@@ -333,9 +335,24 @@ namespace MinesweeperNetCore.Model
                         };
 
                         numberOfMines += 1;
+                        MinePositions.Add((row, column));
                     }
                 }
             }
+        }
+
+        public bool FlagTile(int row, int column)
+        {
+            bool couldFlagTile = false;
+            var currentTile = this[row, column];
+            if (currentTile.IsVisible == false)
+            {
+                couldFlagTile = true;
+                currentTile.IsFlagged = !currentTile.IsFlagged;
+                this[row, column] = currentTile;
+            }
+
+            return couldFlagTile;
         }
 
         private int GenerateMineTileValue()
